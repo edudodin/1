@@ -1,31 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Feliz Dia das Mulheres ❤️</title>
 
 <style>
-    #telaInicio{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#ff9ecf;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:9999;
-color:white;
-}
-
-#telaInicio button{
-font-size:20px;
-padding:15px 30px;
-}
 
 body{
 font-family: Arial, sans-serif;
@@ -42,15 +21,6 @@ color:white;
 font-size:35px;
 font-weight:bold;
 animation: aparecer 2s;
-}
-
-@keyframes cairGirar{
-0%{
-transform: translateY(-20px) rotate(0deg);
-}
-100%{
-transform: translateY(100vh) rotate(360deg);
-}
 }
 
 @keyframes aparecer{
@@ -73,18 +43,41 @@ min-height:80px;
 }
 
 .carousel{
-margin-top:30px;
+position:relative;
+width:350px;
+height:350px;
+margin:30px auto;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 .carousel img{
-width:320px;
+width:100%;
+height:100%;
+object-fit:cover;
 border-radius:15px;
 box-shadow:0 0 10px rgba(0,0,0,0.3);
-transition: transform 0.6s;
+transition:0.5s;
 }
 
-.carousel img:hover{
-transform: scale(1.08);
+/* BOTÕES FIXOS */
+
+.carousel button{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+margin:0;
+padding:10px 15px;
+font-size:18px;
+}
+
+.carousel button:first-child{
+left:-60px;
+}
+
+.carousel button:last-child{
+right:-60px;
 }
 
 button{
@@ -108,43 +101,34 @@ margin-top:20px;
 font-weight:bold;
 }
 
-.musica{
-background:white;
-width:320px;
-margin:auto;
-padding:15px;
-border-radius:15px;
-box-shadow:0 0 10px rgba(0,0,0,0.2);
-}
-
-#capa{
-width:250px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.4);
-}
-
-.info-musica{
-margin-top:10px;
-font-size:18px;
-}
-
 @keyframes cair{
 0%{transform: translateY(-10px);}
 100%{transform: translateY(100vh);}
 }
 
+#telaCheia{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+#telaCheia img{
+max-width:90%;
+max-height:90%;
+border-radius:10px;
+}
 </style>
 </head>
 
 <body>
 
-<div id="telaInicio">
-
-<h1>Clique para entrar ❤️</h1>
-
-<button onclick="entrar()">Entrar</button>
-
-</div>
 <header>
 🌸 Feliz Dia das Mulheres 🌸
 </header>
@@ -162,23 +146,14 @@ font-size:18px;
 <img id="foto" src="foto1.jpeg">
 <button onclick="proxima()">➡</button>
 </div>
-
+<div id="telaCheia" onclick="fecharFoto()">
+<img id="fotoGrande">
+</div>
 <h2>🎵 Nossa Música</h2>
 
-<div class="musica">
-
-<img id="capa" src="capa.jpg">
-
-<div class="info-musica">
-<b>I'll Take Care Of You</b><br>
-Tyler, The Creator
-</div>
-
-<audio controls autoplay loop>
+<audio autoplay loop controls>
 <source src="Tyler, The Creator - I'll Take Care Of You (Clean).mp3" type="audio/mpeg">
 </audio>
-
-</div>
 
 <h2>⏳ Nosso Tempo Juntos</h2>
 
@@ -193,15 +168,7 @@ Tyler, The Creator
 <script>
 
 /* TEXTO APARECENDO */
-function entrar(){
-
-document.getElementById("telaInicio").style.display = "none";
-
-document.querySelector("audio").play();
-
-}
-
-var mensagem = "Hoje é um dia especial para lembrar o quanto você é incrível que mesmo nos dias difíceis continuou lutando. Obrigado por todos os momentos, risadas e carinho que você me proporcionou eu te amo muito. Fico muito lisonjeado por ter você ao meu lado Rabiça. Você torna tudo mais bonito e mais legal, espero poder dividir todos os meus momentos felizes ao seu lado. Eu te vivo minha princesa ❤️";
+var mensagem = "Hoje é um dia especial para lembrar o quanto você é incrível. Obrigado por todos os momentos, risadas e carinho. Você torna tudo mais bonito. ❤️";
 var pos = 0;
 
 function escrever(){
@@ -216,59 +183,41 @@ escrever();
 
 /* CARROSSEL */
 
-var fotos = [
-"foto1.jpeg",
-"foto2.jpeg",
-"foto3.jpeg",
-"foto4.jpeg",
-"foto5.jpeg",
-"foto6.jpeg",
-"foto7.jpeg",
-"foto8.jpeg",
-"foto9.jpeg",
-"foto10.jpeg",
-"foto11.jpeg",
-"foto12.jpeg",
-"foto13.jpeg",
-"foto14.jpeg",
-"foto15.jpeg",
-"foto16.jpeg",
-"foto17.jpeg",
-"foto18.jpeg",
-"foto19.jpeg",
-"foto20.jpeg",
-"foto21.jpeg",
-"foto22.jpeg",
-"foto23.jpeg",
-"foto24.jpeg",
-"foto25.jpeg"
-];
-
-var i = 0;
+var i = 1;
 
 function proxima(){
+
 i++;
-if(i >= fotos.length){
-i = 0;
+
+if(i > 25){
+i = 1;
 }
-document.getElementById("foto").src = fotos[i];
+
+var img = document.getElementById("foto");
+img.style.display = "block";
+img.src = "foto" + i + ".jpeg";
+
 }
 
 function voltar(){
+
 i--;
-if(i < 0){
-i = fotos.length -1;
-}
-document.getElementById("foto").src = fotos[i];
+
+if(i < 1){
+i = 25;
 }
 
-setInterval(proxima,4000);
+var img = document.getElementById("foto");
+img.style.display = "block";
+img.src = "foto" + i + ".jpeg";
 
+}
 /* CONTADOR */
+
+var inicio = new Date("2025-11-28");
 
 function atualizarTempo(){
 
-var inicio = new Date("2025-11-28T18:00:00");
 var agora = new Date();
 
 var diff = agora - inicio;
@@ -291,40 +240,45 @@ atualizarTempo();
 
 /* CORAÇÕES */
 
-function criarFlor(){
+function criarCoracao(){
 
-let flores = ["🌸","🌹","🌺","🌷","💮"];
+let coracao = document.createElement("div");
 
-let flor = document.createElement("div");
+coracao.innerHTML = "❤️";
 
-flor.innerHTML = flores[Math.floor(Math.random() * flores.length)];
+coracao.style.position = "fixed";
+coracao.style.top = "-10px";
+coracao.style.left = Math.random() * window.innerWidth + "px";
+coracao.style.fontSize = "25px";
+coracao.style.animation = "cair 5s linear";
 
-flor.style.position = "fixed";
-flor.style.top = "-20px";
-flor.style.left = Math.random() * window.innerWidth + "px";
+document.body.appendChild(coracao);
 
-flor.style.fontSize = (20 + Math.random()*25) + "px";
-
-flor.style.animation = "cairGirar 6s linear";
-
-document.body.appendChild(flor);
-
-setTimeout(()=>{
-flor.remove();
-},6000);
+setTimeout(() => {
+coracao.remove();
+},5000);
 
 }
 
-setInterval(criarFlor,400);
+setInterval(criarCoracao,500);
 
 /* BOTÃO SURPRESA */
 
 function surpresa(){
-
-alert("Você é muito especial para mim. Obrigado por todos os momentos que vivemos juntos, eu me sinto a pessoa mais feliz do mundo ao seu lado ❤️");
-
+alert("Você é muito especial para mim ❤️");
 }
 
+document.getElementById("foto").onclick = function(){
+let tela = document.getElementById("telaCheia");
+let grande = document.getElementById("fotoGrande");
+
+grande.src = this.src;
+tela.style.display = "flex";
+}
+
+function fecharFoto(){
+document.getElementById("telaCheia").style.display = "none";
+}
 </script>
 
 </body>
