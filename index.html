@@ -551,6 +551,136 @@ audio::-webkit-media-controls-panel {
   letter-spacing: 1px;
 }
 
+/* RAZÕES */
+.razoes-wrap {
+  position: relative;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.card-razao {
+  background: white;
+  border-radius: 24px;
+  padding: 36px 28px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 30px rgba(232,69,122,0.13);
+  border: 1px solid rgba(232,69,122,0.12);
+  position: relative;
+  overflow: hidden;
+  animation: entrarCard 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes entrarCard {
+  from { opacity: 0; transform: scale(0.85) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.card-razao .numero-razao {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  color: var(--rosa-claro);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.card-razao .emoji-razao {
+  font-size: 38px;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.card-razao .texto-razao {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(17px, 4.5vw, 22px);
+  color: var(--texto);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.razoes-progresso {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.prog-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rosa-claro);
+  transition: background 0.3s, transform 0.3s;
+}
+
+.prog-dot.ativo {
+  background: var(--rosa);
+  transform: scale(1.3);
+}
+
+.btn-proxima-razao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--rosa), #c0305f);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-family: 'Lato', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(232,69,122,0.35);
+  transition: transform 0.2s;
+  margin: 0;
+}
+
+.btn-proxima-razao:active { transform: scale(0.96); }
+
+.card-razao-final {
+  background: linear-gradient(135deg, #1a0a10, #3d1525);
+  border-radius: 24px;
+  padding: 36px 28px;
+  width: 100%;
+  text-align: center;
+  animation: entrarCard 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card-razao-final p {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: white;
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.card-razao-final small {
+  color: var(--rosa-claro);
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.btn-reiniciar {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.3);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 18px;
+}
+
+
 </style>
 </head>
 <body>
@@ -641,6 +771,13 @@ audio::-webkit-media-controls-panel {
     </div>
   </div>
 
+  <!-- RAZÕES -->
+  <div class="secao">
+    <div class="secao-titulo">💝 Razões pelas quais te amo</div>
+    <div class="razoes-wrap" id="razoesWrap"></div>
+    <div class="razoes-progresso" id="razoesProgresso"></div>
+  </div>
+
   <!-- SURPRESA -->
   <button class="btn-surpresa" onclick="surpresa()">🎁 Clique para uma surpresa</button>
 
@@ -682,6 +819,7 @@ document.getElementById("btnEntrar").addEventListener("click", function(){
 
   // Inicia efeitos
   iniciarEmojis();
+  iniciarRazoes();
 });
 
 /* ==========================================
@@ -798,6 +936,100 @@ function criarEmoji(){
   el.style.animationDuration = dur + "s";
   document.body.appendChild(el);
   setTimeout(function(){ el.remove(); }, dur * 1000);
+}
+
+/* ==========================================
+   RAZÕES PELAS QUAIS TE AMO
+   ========================================== */
+var razoes = [
+  { emoji: "💞", texto: "Porque você me mostrou o que é o amor de verdade" },
+  { emoji: "🗣️", texto: "Porque eu posso me expressar sem medo de ser julgado" },
+  { emoji: "🤝", texto: "Porque posso confiar em você pra tudo" },
+  { emoji: "🥰", texto: "Porque seu carinho é muito bom" },
+  { emoji: "😊", texto: "Porque seu sorriso é o mais lindo de todo universo" },
+  { emoji: "🌟", texto: "Porque não importa o lugar, você sempre está pronta pra me ajudar" },
+  { emoji: "💖", texto: "Porque você me faz bem" },
+  { emoji: "📚", texto: "Porque eu aprendo muito com você" },
+  { emoji: "🐟", texto: "Porque eu te gostu bbzona!!!" }
+];
+
+var razaoAtual = -1;
+
+function iniciarRazoes() {
+  var prog = document.getElementById("razoesProgresso");
+  prog.innerHTML = "";
+  razoes.forEach(function(_, idx){
+    var dot = document.createElement("div");
+    dot.className = "prog-dot";
+    dot.id = "dot-" + idx;
+    prog.appendChild(dot);
+  });
+  mostrarBotaoRazao();
+}
+
+function mostrarBotaoRazao() {
+  var wrap = document.getElementById("razoesWrap");
+  wrap.innerHTML = "";
+  var btn = document.createElement("button");
+  btn.className = "btn-proxima-razao";
+  btn.innerHTML = "💝 Revelar primeira razão";
+  btn.onclick = proximaRazao;
+  wrap.appendChild(btn);
+}
+
+function proximaRazao() {
+  razaoAtual++;
+  if(razaoAtual > 0){
+    var prevDot = document.getElementById("dot-" + (razaoAtual-1));
+    if(prevDot){ prevDot.classList.remove("ativo"); prevDot.style.opacity = "0.5"; }
+  }
+  if(razaoAtual >= razoes.length) { mostrarFinal(); return; }
+
+  var dot = document.getElementById("dot-" + razaoAtual);
+  if(dot) dot.classList.add("ativo");
+
+  var r = razoes[razaoAtual];
+  var wrap = document.getElementById("razoesWrap");
+  wrap.innerHTML = "";
+
+  var card = document.createElement("div");
+  card.className = "card-razao";
+  card.innerHTML =
+    '<span class="numero-razao">Razão ' + (razaoAtual+1) + ' de ' + razoes.length + '</span>' +
+    '<span class="emoji-razao">' + r.emoji + '</span>' +
+    '<p class="texto-razao">' + r.texto + '</p>';
+  wrap.appendChild(card);
+
+  for(var k = 0; k < 5; k++) setTimeout(criarEmoji, k * 100);
+
+  setTimeout(function(){
+    var btn = document.createElement("button");
+    btn.className = "btn-proxima-razao";
+    btn.innerHTML = razaoAtual < razoes.length - 1 ? "➡ Próxima razão" : "🌸 Finalizar";
+    btn.onclick = proximaRazao;
+    wrap.appendChild(btn);
+  }, 400);
+}
+
+function mostrarFinal() {
+  var wrap = document.getElementById("razoesWrap");
+  wrap.innerHTML =
+    '<div class="card-razao-final">' +
+    '<p>E são infinitas as razões pelas quais te amo...</p>' +
+    '<small>❤️ para sempre</small><br>' +
+    '<button class="btn-reiniciar" onclick="reiniciarRazoes()">Ler de novo 🔁</button>' +
+    '</div>';
+  for(var k = 0; k < 15; k++) setTimeout(criarEmoji, k * 80);
+}
+
+function reiniciarRazoes() {
+  razaoAtual = -1;
+  document.querySelectorAll(".prog-dot").forEach(function(d){
+    d.classList.remove("ativo");
+    d.style.background = "var(--rosa-claro)";
+    d.style.opacity = "1";
+  });
+  mostrarBotaoRazao();
 }
 
 /* ==========================================
