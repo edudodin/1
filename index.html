@@ -44,7 +44,8 @@ min-height:80px;
 
 .carousel{
 position:relative;
-width:350px;
+width:90%;
+max-width:350px;
 height:350px;
 margin:30px auto;
 display:flex;
@@ -73,11 +74,11 @@ font-size:18px;
 }
 
 .carousel button:first-child{
-left:-60px;
+left:-10px;
 }
 
 .carousel button:last-child{
-right:-60px;
+right:-10px;
 }
 
 button{
@@ -124,6 +125,27 @@ max-width:90%;
 max-height:90%;
 border-radius:10px;
 }
+
+.musica{
+background:white;
+width:90%;
+max-width:320px;
+margin:20px auto;
+padding:15px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+#capa{
+width:100%;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.4);
+}
+
+.info-musica{
+margin-top:10px;
+font-size:18px;
+}
 </style>
 </head>
 
@@ -151,9 +173,20 @@ border-radius:10px;
 </div>
 <h2>🎵 Nossa Música</h2>
 
+<div class="musica">
+
+<img id="capa" src="capa.jpg">
+
+<div class="info-musica">
+<b>I'll Take Care Of You</b><br>
+Tyler, The Creator
+</div>
+
 <audio autoplay loop controls>
 <source src="Tyler, The Creator - I'll Take Care Of You (Clean).mp3" type="audio/mpeg">
 </audio>
+
+</div>
 
 <h2>⏳ Nosso Tempo Juntos</h2>
 
